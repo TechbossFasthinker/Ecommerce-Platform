@@ -69,20 +69,17 @@ initializeDatabase();
             <?php
             $categories = getAllCategories();
             foreach ($categories as $category) {
-                $categoryImages = [
-                    'Electronics' => 'https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                    'Clothing' => 'https://images.pexels.com/photos/934063/pexels-photo-934063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                    'Home & Kitchen' => 'https://images.pexels.com/photos/1358900/pexels-photo-1358900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-                ];
+                $categoryImage = 'images/categories/' . strtolower(str_replace(' & ', '-', str_replace(' ', '-', $category['name']))) . '.jpg';
+                $defaultImage = 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
                 
-                $categoryImage = isset($categoryImages[$category['name']]) 
-                    ? $categoryImages[$category['name']] 
-                    : 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+                // Check if category image exists
+                $imagePath = __DIR__ . '/' . $categoryImage;
+                $imageUrl = file_exists($imagePath) ? $categoryImage : $defaultImage;
                 ?>
                 <div class="col-6 col-md-4">
                     <a href="products/index.php?category=<?= $category['id'] ?>" class="text-decoration-none">
                         <div class="category-card">
-                            <img src="<?= $categoryImage ?>" alt="<?= $category['name'] ?>">
+                            <img src="<?= $imageUrl ?>" alt="<?= $category['name'] ?>">
                             <div class="overlay">
                                 <div class="category-name"><?= $category['name'] ?></div>
                             </div>
